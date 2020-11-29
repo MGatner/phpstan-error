@@ -23,6 +23,10 @@ class Autoloader
 
 		// Prepend the PSR4 autoloader for maximum performance.
 		spl_autoload_register([$this, 'loadClass'], true, true); // @phpstan-ignore-line
+
+		foreach ($this->aliases as $alias => $replacement) {
+			class_alias($replacement, $alias, true);
+		}
 	}
 
 	/**
@@ -36,20 +40,6 @@ class Autoloader
 	{
 		$class = trim($class, '\\');
 		$class = str_ireplace('.php', '', $class);
-
-		// Check if this class is an alias
-		if (isset($this->aliases[$class]))
-		{
-			// Attempt to load the replacement instead, then alias it
-			$replacement = $this->aliases[$class];
-			if ($this->loadClass($replacement))
-			{
-				class_alias($replacement, $class, false);
-				return true;
-			}
-
-			return false;
-		}
 
 		$file = __DIR__ . DIRECTORY_SEPARATOR . substr($class, strrpos($class, '\\') + 1) . '.php';
 		return $this->includeFile($file);
