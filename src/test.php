@@ -1,15 +1,17 @@
 <?php
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Model.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Database.php';
 
-// Try to get the class we are intercepting
-$instance = new \MGatner\PHPStan\Five();
+$db    = new class extends Database {};
+$model = new Model($db);
 
-echo get_class($instance) . PHP_EOL;
-echo $instance->getNumber() . PHP_EOL;
-
-// Try to get the extended version
-$instance2 = new \MGatner\PHPStan\FiveExt();
-
-echo get_class($instance2) . PHP_EOL;
-echo $instance2->getNumber() . PHP_EOL;
+// Try to check a property
+if (! empty($model->test))
+{
+	echo 'Yes' . PHP_EOL;
+}
+else
+{
+	echo 'No' . PHP_EOL;
+}

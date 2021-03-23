@@ -4,4 +4,4 @@ parameters:
 	paths:
 		- src
 	bootstrapFiles:
-		- src/bootstrap.php
+
